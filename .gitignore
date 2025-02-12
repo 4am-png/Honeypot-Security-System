@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Docker
+*.log
+*.swp
+docker-compose.override.yml
+
+# Environment files
+.env
+*.env
+
+# Logs
+logs/
