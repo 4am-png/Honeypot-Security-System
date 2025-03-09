@@ -3,12 +3,33 @@ version: '3.8'
 services:
   app:
     build:
-      context: .
-      dockerfile: app/Dockerfile
+      context: ./app
+      dockerfile: Dockerfile
     volumes:
       - ./app:/app
     ports:
       - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/mydb
+    depends_on:
+      - db
+
+  go-service:
+    build:
+      context: ./backend/go-service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  cpp-analyzer:
+    build:
+      context: ./backend/cpp-analyzer
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+
   nginx:
     build:
       context: ./nginx
@@ -17,14 +38,22 @@ services:
       - ./nginx:/etc/nginx/conf.d
     ports:
       - "80:80"
+    depends_on:
+      - app
+      - go-service
+
   db:
     image: postgres:13
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=mydb
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+
   monitoring:
     build:
       context: ./monitoring
@@ -32,3 +61,19 @@ services:
     ports:
       - "9090:9090"
       - "3000:3000"
+    depends_on:
+      - app
+      - go-service
+
+  terraform:
+    image: hashicorp/terraform:latest
+    volumes:
+      - ./infrastructure/terraform:/terraform
+    working_dir: /terraform
+    entrypoint: [ "terraform" ]
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
+    driver: local

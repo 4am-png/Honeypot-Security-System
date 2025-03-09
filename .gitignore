@@ -5,6 +5,23 @@ __pycache__/
 *.pyd
 *.db
 
+# Go
+bin/
+pkg/
+*.exe
+*.out
+*.mod
+*.sum
+
+# C++
+*.o
+*.a
+*.so
+*.exe
+*.dll
+*.dSYM/
+*.bin
+
 # Docker
 *.log
 *.swp
