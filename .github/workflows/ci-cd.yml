@@ -1,0 +1,54 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Python Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Build Go Code
+        run: go build -v ./...
+
+      - name: Set up C++ Compiler
+        run: sudo apt-get install -y g++
+
+      - name: Compile C++ Code
+        run: g++ -o output main.cpp
+
+      - name: Run C++ Tests
+        run: ./output
+
+      - name: Validate Docker Compose
+        run: docker-compose config
+
+      - name: Build and Run Containers
+        run: docker-compose up -d --build
+
+      - name: Run Python Tests
+        run: pytest tests/  # Якщо є тести
+
+      - name: Stop and Clean Containers
+        run: docker-compose down

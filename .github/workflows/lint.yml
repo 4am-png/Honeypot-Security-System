@@ -1,0 +1,34 @@
+name: Code Quality Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Python Linters
+        run: pip install flake8 black
+
+      - name: Check Python Code
+        run: |
+          black --check .
+          flake8 .
+
+      - name: Install Go Linters
+        run: go install golang.org/x/lint/golint@latest
+
+      - name: Check Go Code
+        run: golint ./...
+
+      - name: Install C++ Linters
+        run: sudo apt-get install clang-format
+
+      - name: Check C++ Code
+        run: clang-format --dry-run --Werror main.cpp
