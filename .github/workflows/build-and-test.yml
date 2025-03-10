@@ -1,0 +1,46 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Install dependencies
+        run: |
+          cd backend/go-service
+          go mod tidy
+
+      - name: Build Go service
+        run: |
+          cd backend/go-service
+          go build -v ./...
+
+      - name: Set up C++ (GCC & CMake)
+        run: |
+          sudo apt update && sudo apt install -y g++ cmake
+
+      - name: Build C++ service
+        run: |
+          cd backend/cpp-analyzer
+          mkdir -p build && cd build
+          cmake ..
+          make
+
+      - name: Run Tests
+        run: |
+          cd backend/go-service
+          go test ./...
