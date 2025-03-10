@@ -5,23 +5,6 @@ __pycache__/
 *.pyd
 *.db
 
-# Go
-bin/
-pkg/
-*.exe
-*.out
-*.mod
-*.sum
-
-# C++
-*.o
-*.a
-*.so
-*.exe
-*.dll
-*.dSYM/
-*.bin
-
 # Docker
 *.log
 *.swp
@@ -34,6 +17,34 @@ docker-compose.override.yml
 # Logs
 logs/
 
-# Dockerfiles and build files
-*.dockerfile
-*.tar
+# Build artifacts
+*.o
+*.so
+*.a
+*.out
+
+# C++
+*.exe
+*.dll
+*.obj
+*.pdb
+*.ilk
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# Go
+/go/bin/
+/go/pkg/
+go.sum
+go.mod
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
