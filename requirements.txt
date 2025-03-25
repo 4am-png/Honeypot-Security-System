@@ -4,3 +4,11 @@ prometheus_client
 gunicorn
 Flask-SQLAlchemy
 Flask-Migrate
+requests
+Flask-Cors
+pytest
+flask-testing
+flask-login
+sqlalchemy-utils
+Celery
+python-dotenv
