@@ -10,4 +10,3 @@ file(GLOB SOURCES src/*.cpp)
 
 add_executable(cpp_analyzer ${SOURCES})
 
-# target_link_libraries(cpp_analyzer your_library)
