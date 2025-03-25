@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
-
-project(HoneypotAnalyzer)
+project(CppAnalyzer)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(honeypot_analyzer main.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/src)
+
+
+file(GLOB SOURCES src/*.cpp)
+
+add_executable(cpp_analyzer ${SOURCES})
+
+# target_link_libraries(cpp_analyzer your_library)
